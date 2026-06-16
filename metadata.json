@@ -1,0 +1,6 @@
+{
+  "name": "Coderat",
+  "description": "Coderat discovers flows, generates Playwright tests, and runs them automatically on every PR.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
