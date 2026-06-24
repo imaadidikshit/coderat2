@@ -19,6 +19,8 @@ import AIProviders from './pages/AIProviders';
 import PublicIntegrations from './pages/PublicIntegrations';
 import Features from './pages/Features';
 import Sandbox from './pages/Sandbox';
+import Pricing from './pages/Pricing';
+import Docs from './pages/Docs';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Terms from './pages/Terms';
 
@@ -47,6 +49,8 @@ export default function App() {
           <Route path="/integrations" element={<PublicIntegrations />} />
           <Route path="/features" element={<Features />} />
           <Route path="/sandbox" element={<Sandbox />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/docs" element={<Docs />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />
           
