@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { prefersReducedMotion, isCoarsePointer, lerp } from './motion';
 
-type Props = {
+type Props = React.HTMLAttributes<HTMLDivElement> & {
   children: React.ReactNode;
   className?: string;
   /** Max tilt in degrees. */
@@ -18,6 +18,7 @@ export const TiltCard: React.FC<Props> = ({
   className = '',
   max = 10,
   glow = true,
+  ...rest
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const frame = useRef<number>(0);
@@ -76,6 +77,7 @@ export const TiltCard: React.FC<Props> = ({
       onMouseEnter={handleEnter}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
+      {...rest}
     >
       {glow && <span className="cr-tilt-glow" aria-hidden="true" />}
       {children}
