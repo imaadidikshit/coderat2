@@ -224,12 +224,12 @@ const HeroSequence = () => {
                         Autonomous QA testing software considered "not bad" by millions of developers. Catch DOM drift and heal Playwright scripts on the fly.
                     </p>
                     <div className="flex flex-col sm:flex-row items-center gap-4 font-bold uppercase text-[13px] tracking-wide">
-                        <MagneticButton className="w-full sm:w-auto">
+                        <MagneticButton as="div" className="block w-full sm:w-auto">
                             <Link to="/signup" className="bg-white text-black px-8 py-4 rounded-xl hover:bg-gray-200 transition-colors w-full sm:w-auto text-center flex items-center justify-center gap-2 shadow-[0_0_40px_rgba(255,255,255,0.15)]">
                                 Get Started <ArrowRight className="w-4 h-4" />
                             </Link>
                         </MagneticButton>
-                        <MagneticButton className="w-full sm:w-auto">
+                        <MagneticButton as="div" className="block w-full sm:w-auto">
                             <Link to="/sandbox" className="bg-[#1A1A1A] text-white border border-white/10 px-8 py-4 rounded-xl hover:bg-[#222222] transition-colors w-full sm:w-auto text-center flex items-center justify-center gap-2">
                                 See Sandbox
                             </Link>
