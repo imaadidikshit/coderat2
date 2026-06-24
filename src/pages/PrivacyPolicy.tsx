@@ -17,7 +17,7 @@ export default function PrivacyPolicy() {
         <div className="relative z-10 space-y-8 text-white/70 leading-relaxed">
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">1. Information We Collect</h2>
-            <p>We collect information you provide directly to us when using QA Copilot, including your GitHub repository metadata, test execution logs, and account details. (Coderat) We do not store your source code; we only process DOM snapshots and test assertions to provide our AI-healing capabilities.</p>
+            <p>We collect information you provide directly to us when using Coderat, including your GitHub repository metadata, test execution logs, and account details. We do not store your source code; we only process DOM snapshots and test assertions to provide our AI-healing capabilities.</p>
           </section>
 
           <section>
