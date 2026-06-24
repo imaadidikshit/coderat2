@@ -1,12 +1,11 @@
 import React from 'react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
-import { CustomCursor, GradientMesh } from '../components/fx';
+import { GradientMesh } from '../components/fx';
 
 export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen bg-[#0A0A0B] text-white font-sans selection:bg-indigo-500/30">
-      <CustomCursor />
       <Navbar />
       
       <main className="relative pt-32 pb-24 px-6 max-w-[800px] mx-auto">

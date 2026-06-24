@@ -8,7 +8,7 @@ import {
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
-import { CustomCursor, TiltCard, MagneticButton, GradientMesh, prefersReducedMotion } from '../components/fx';
+import { TiltCard, MagneticButton, GradientMesh, prefersReducedMotion } from '../components/fx';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -90,7 +90,6 @@ export default function Docs() {
 
   return (
     <div className="min-h-screen bg-[#0A0A0B] text-white font-sans selection:bg-indigo-500/30">
-      <CustomCursor />
       <Navbar />
 
       {/* Hero */}

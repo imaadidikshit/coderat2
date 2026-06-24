@@ -1,12 +1,11 @@
 import React from 'react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
-import { CustomCursor, GradientMesh } from '../components/fx';
+import { GradientMesh } from '../components/fx';
 
 export default function Terms() {
   return (
     <div className="min-h-screen bg-[#0A0A0B] text-white font-sans selection:bg-indigo-500/30">
-      <CustomCursor />
       <Navbar />
       
       <main className="relative pt-32 pb-24 px-6 max-w-[800px] mx-auto">
@@ -17,12 +16,12 @@ export default function Terms() {
         <div className="relative z-10 space-y-8 text-white/70 leading-relaxed">
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">1. Acceptance of Terms</h2>
-            <p>By accessing or using QA Copilot, you agree to be bound by these Terms of Service. If you disagree with any part of the terms, you may not access the service.</p>
+            <p>By accessing or using Coderat, you agree to be bound by these Terms of Service. If you disagree with any part of the terms, you may not access the service.</p>
           </section>
 
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">2. Description of Service</h2>
-            <p>QA Copilot is an AI-powered quality assurance and test automation platform. We provide tools for executing, healing, and analyzing automated tests within your continuous integration pipelines.</p>
+            <p>Coderat is an AI-powered quality assurance and test automation platform. We provide tools for executing, healing, and analyzing automated tests within your continuous integration pipelines.</p>
           </section>
 
           <section>
@@ -32,7 +31,7 @@ export default function Terms() {
 
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">4. Limitation of Liability</h2>
-            <p>In no event shall QA Copilot, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the Service.</p>
+            <p>In no event shall Coderat, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the Service.</p>
           </section>
         </div>
       </main>
