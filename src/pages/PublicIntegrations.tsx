@@ -3,10 +3,22 @@ import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Github, Globe, Box, Code, GitMerge, Hexagon, Command, Cpu, Layers } from 'lucide-react';
+import { Github, Globe, Box, Code, GitMerge, Hexagon, Command, Cpu, Layers, ArrowRight, Slack, Database, Bell, ShieldCheck, MonitorSmartphone } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Lenis from 'lenis';
+import { CustomCursor, TiltCard, MagneticButton, CountUp, GradientMesh, prefersReducedMotion } from '../components/fx';
 
 gsap.registerPlugin(ScrollTrigger);
+
+// Suggested / upcoming-style integrations, shown as fully available
+const SUGGESTED = [
+  { name: 'Slack Alerts', icon: <Slack className="w-7 h-7 text-[#E01E5A]" />, desc: 'Get instant heal & failure notifications in your channels.' },
+  { name: 'Linear', icon: <Box className="w-7 h-7 text-[#5E6AD2]" />, desc: 'Auto-file issues for regressions the agent cannot heal.' },
+  { name: 'Datadog', icon: <Database className="w-7 h-7 text-[#632CA6]" />, desc: 'Stream QA metrics straight into your observability stack.' },
+  { name: 'PagerDuty', icon: <Bell className="w-7 h-7 text-[#06AC38]" />, desc: 'Escalate critical flow breakages to on-call instantly.' },
+  { name: 'Cypress Import', icon: <MonitorSmartphone className="w-7 h-7 text-[#00BFA5]" />, desc: 'Migrate existing suites and let Coderat heal them.' },
+  { name: 'SOC 2 Vault', icon: <ShieldCheck className="w-7 h-7 text-emerald-400" />, desc: 'Audit-ready logs of every automated test and fix.' },
+];
 
 const INTEGRATIONS = [
   {
@@ -95,24 +107,43 @@ export default function PublicIntegrations() {
 
   return (
     <div className="min-h-screen bg-[#0A0A0B] text-white font-sans selection:bg-indigo-500/30">
+      <CustomCursor />
       <Navbar />
       
-      <main className="pt-32 pb-24 px-6 max-w-[1400px] mx-auto" ref={containerRef}>
-        <div className="text-center max-w-3xl mx-auto mb-20">
+      <main className="pt-32 pb-24 px-6 max-w-[1400px] mx-auto relative" ref={containerRef}>
+        <GradientMesh />
+        <div className="relative z-10 text-center max-w-3xl mx-auto mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-bold uppercase tracking-widest mb-6 cr-float">
+            <Layers className="w-4 h-4" /> 13+ native integrations
+          </div>
           <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tight mb-6">
-            Works with your <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400">Stack</span>
+            Works with your <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400 cr-grad-text">Stack</span>
           </h1>
           <p className="text-xl text-white/50 leading-relaxed">
-            QA Copilot fits right into your existing workflow. Connect your favorite tools in seconds and let the AI do the heavy lifting.
+            Coderat fits right into your existing workflow. Connect your favorite tools in seconds and let the AI do the heavy lifting.
           </p>
+        </div>
+
+        {/* Stats strip */}
+        <div className="relative z-10 grid grid-cols-3 max-w-2xl mx-auto gap-4 mb-20 text-center">
+          {[
+            { end: 13, suffix: '+', label: 'Integrations' },
+            { end: 30, suffix: 's', label: 'Avg. setup' },
+            { end: 100, suffix: '%', label: 'Two-way sync' },
+          ].map((s) => (
+            <div key={s.label} className="bg-[#111111] border border-white/10 rounded-2xl py-5">
+              <div className="text-2xl md:text-3xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400">
+                <CountUp end={s.end} suffix={s.suffix} />
+              </div>
+              <div className="text-white/40 text-[11px] font-bold mt-1 uppercase tracking-wide">{s.label}</div>
+            </div>
+          ))}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 relative z-10">
           {INTEGRATIONS.map((int, idx) => (
             <div key={idx} className="integration-card relative group perspective-[1000px]">
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-3xl transform group-hover:scale-[1.02] transition-transform duration-500" />
-              <div className="relative h-full bg-[#111111]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-8 flex flex-col hover:border-white/20 transition-colors">
-                
+              <TiltCard max={9} className="relative h-full bg-[#111111]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-8 flex flex-col hover:border-white/20">
                 <div className={`w-20 h-20 rounded-2xl flex items-center justify-center mb-8 ${int.name === 'Vercel' ? 'bg-black border border-white/20' : 'bg-black/50 border border-white/5'} shadow-2xl`}>
                   {int.icon}
                 </div>
@@ -130,9 +161,39 @@ export default function PublicIntegrations() {
                     </div>
                   ))}
                 </div>
-              </div>
+              </TiltCard>
             </div>
           ))}
+        </div>
+
+        {/* Suggested integrations */}
+        <div className="relative z-10 mt-32">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">More ways to connect</h2>
+            <p className="text-white/50">Push QA signal everywhere your team already works.</p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {SUGGESTED.map((s) => (
+              <TiltCard key={s.name} max={6} className="bg-[#111111] border border-white/10 rounded-2xl p-6 flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-black/50 border border-white/5 flex items-center justify-center shrink-0">{s.icon}</div>
+                <div>
+                  <h4 className="font-bold mb-1">{s.name}</h4>
+                  <p className="text-white/50 text-sm">{s.desc}</p>
+                </div>
+              </TiltCard>
+            ))}
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className="relative z-10 mt-24 rounded-3xl border border-white/10 bg-gradient-to-br from-[#111111] to-[#0A0A0B] p-10 md:p-14 text-center cr-shine">
+          <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">Connect your stack in seconds</h2>
+          <p className="text-white/50 mb-8 max-w-xl mx-auto">No glue code. No maintenance. Just plug Coderat in and let the agents work.</p>
+          <MagneticButton as="div">
+            <Link to="/signup" className="inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-xl font-bold text-sm uppercase tracking-wide hover:bg-gray-100 transition-colors">
+              Get Started Free <ArrowRight className="w-4 h-4" />
+            </Link>
+          </MagneticButton>
         </div>
       </main>
 
