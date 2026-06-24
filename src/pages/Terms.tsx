@@ -1,14 +1,17 @@
 import React from 'react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
+import { CustomCursor, GradientMesh } from '../components/fx';
 
 export default function Terms() {
   return (
     <div className="min-h-screen bg-[#0A0A0B] text-white font-sans selection:bg-indigo-500/30">
+      <CustomCursor />
       <Navbar />
       
-      <main className="pt-32 pb-24 px-6 max-w-[800px] mx-auto">
-        <h1 className="text-4xl md:text-5xl font-display font-bold tracking-tight mb-8">Terms of Service</h1>
+      <main className="relative pt-32 pb-24 px-6 max-w-[800px] mx-auto">
+        <GradientMesh particles={false} />
+        <h1 className="relative z-10 text-4xl md:text-5xl font-display font-bold tracking-tight mb-8">Terms of Service</h1>
         <p className="text-white/50 mb-12 text-sm uppercase tracking-widest">Last updated: June 2026</p>
 
         <div className="space-y-8 text-white/70 leading-relaxed">

@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
-import { Play, Code, Box, Cpu } from 'lucide-react';
+import { Play, Code, Box, Cpu, Search, Bot, GitBranch, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
+import { CustomCursor, TiltCard, MagneticButton, GradientMesh } from '../components/fx';
 
 export default function Sandbox() {
   const codeRef = useRef<HTMLDivElement>(null);
@@ -30,12 +32,17 @@ export default function Sandbox() {
 
   return (
     <div className="min-h-screen bg-[#0A0A0B] text-white font-sans selection:bg-indigo-500/30 flex flex-col">
+      <CustomCursor />
       <Navbar />
       
-      <main className="flex-1 pt-32 pb-24 px-6 max-w-[1400px] mx-auto w-full flex flex-col">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+      <main className="flex-1 pt-32 pb-24 px-6 max-w-[1400px] mx-auto w-full flex flex-col relative">
+        <GradientMesh />
+        <div className="relative z-10 text-center max-w-3xl mx-auto mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-300 text-xs font-bold uppercase tracking-widest mb-6 cr-float">
+            <Play className="w-4 h-4" /> Live demo · no signup
+          </div>
           <h1 className="text-5xl md:text-7xl font-display font-bold tracking-tight mb-6">
-            Interactive <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-indigo-400">Sandbox</span>
+            Interactive <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-indigo-400 cr-grad-text">Sandbox</span>
           </h1>
           <p className="text-xl text-white/50 leading-relaxed">
             Write a Playwright test and watch our AI agent execute, debug, and heal it in real-time. No setup required.
@@ -89,6 +96,44 @@ export default function Sandbox() {
             </div>
           </div>
         </div>
+
+        {/* How it works */}
+        <section className="relative z-10 mt-28">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">From broken to merged in 3 steps</h2>
+            <p className="text-white/50">The same loop runs automatically on every pull request.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { icon: Search, c: 'text-emerald-400', t: 'Discover & Run', d: 'Agents explore your app, generate Playwright specs, and run them on every change.' },
+              { icon: Bot, c: 'text-indigo-400', t: 'Detect & Heal', d: 'When a selector breaks, the agent reads the new DOM and rewrites a resilient locator.' },
+              { icon: GitBranch, c: 'text-pink-400', t: 'Open a PR', d: 'The fix ships as a reviewable pull request with diffs and results attached.' },
+            ].map((s, i) => {
+              const Icon = s.icon;
+              return (
+                <TiltCard key={i} max={8} className="bg-[#111111] border border-white/10 rounded-2xl p-8">
+                  <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center mb-5">
+                    <Icon className={`w-6 h-6 ${s.c}`} />
+                  </div>
+                  <div className="text-xs font-bold text-white/30 uppercase tracking-widest mb-2">Step {i + 1}</div>
+                  <h3 className="text-xl font-bold mb-2">{s.t}</h3>
+                  <p className="text-white/50 text-sm leading-relaxed">{s.d}</p>
+                </TiltCard>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="relative z-10 mt-20 rounded-3xl border border-white/10 bg-gradient-to-br from-[#111111] to-[#0A0A0B] p-10 md:p-14 text-center cr-shine">
+          <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">Run this on your real repo</h2>
+          <p className="text-white/50 mb-8 max-w-xl mx-auto">Connect GitHub and let Coderat heal your suite automatically.</p>
+          <MagneticButton as="div">
+            <Link to="/signup" className="inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-xl font-bold text-sm uppercase tracking-wide hover:bg-gray-100 transition-colors">
+              Get Started Free <ArrowRight className="w-4 h-4" />
+            </Link>
+          </MagneticButton>
+        </section>
       </main>
 
       <Footer />
