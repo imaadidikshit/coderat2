@@ -1,0 +1,242 @@
+/* =============================================================
+   animations.css — PURELY ADDITIVE UI/UX enhancement layer.
+   Do NOT override any existing classes. Every selector here is
+   namespaced (.cr-*) or scoped to [data-animate] attributes so
+   it can never collide with existing logic/styling classes.
+   Respects prefers-reduced-motion at the bottom of the file.
+   ============================================================= */
+
+:root {
+  /* New animation-only variables (prefixed --cr- to avoid clashing) */
+  --cr-ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --cr-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --cr-cursor-dot: 6px;
+  --cr-cursor-ring: 30px;
+  --cr-glow-indigo: rgba(99, 102, 241, 0.35);
+  --cr-glow-emerald: rgba(16, 185, 129, 0.35);
+  --cr-surface: rgba(17, 17, 17, 0.8);
+}
+
+/* ---------- Custom cursor (dot + follower ring) ---------- */
+.cr-cursor-dot,
+.cr-cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate3d(-50%, -50%, 0);
+  mix-blend-mode: difference;
+}
+.cr-cursor-dot {
+  width: var(--cr-cursor-dot);
+  height: var(--cr-cursor-dot);
+  background: #ffffff;
+}
+.cr-cursor-ring {
+  width: var(--cr-cursor-ring);
+  height: var(--cr-cursor-ring);
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  transition: width 0.25s var(--cr-ease-out-expo),
+    height 0.25s var(--cr-ease-out-expo),
+    background-color 0.25s var(--cr-ease-out-expo);
+}
+.cr-cursor-ring.cr-cursor-hover {
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.08);
+}
+/* Hide custom cursor on touch / coarse pointers */
+@media (hover: none), (pointer: coarse) {
+  .cr-cursor-dot,
+  .cr-cursor-ring {
+    display: none !important;
+  }
+}
+
+/* ---------- Animated gradient mesh / particle ambient bg ---------- */
+.cr-mesh {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.cr-mesh-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  opacity: 0.45;
+  will-change: transform;
+}
+.cr-mesh-blob--1 {
+  width: 40vw;
+  height: 40vw;
+  background: radial-gradient(circle at 30% 30%, #6366f1, transparent 70%);
+  top: -10%;
+  left: -5%;
+  animation: cr-float-1 18s ease-in-out infinite;
+}
+.cr-mesh-blob--2 {
+  width: 35vw;
+  height: 35vw;
+  background: radial-gradient(circle at 70% 70%, #10b981, transparent 70%);
+  bottom: -10%;
+  right: -5%;
+  animation: cr-float-2 22s ease-in-out infinite;
+}
+.cr-mesh-blob--3 {
+  width: 30vw;
+  height: 30vw;
+  background: radial-gradient(circle at 50% 50%, #ec4899, transparent 70%);
+  top: 30%;
+  left: 40%;
+  animation: cr-float-3 26s ease-in-out infinite;
+}
+
+@keyframes cr-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(8vw, 6vh) scale(1.15); }
+}
+@keyframes cr-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-6vw, -8vh) scale(1.2); }
+}
+@keyframes cr-float-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-5vw, 5vh) scale(0.85); }
+}
+
+/* Subtle dotted particle field overlay */
+.cr-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 30%, transparent 75%);
+  animation: cr-drift 40s linear infinite;
+}
+@keyframes cr-drift {
+  from { background-position: 0 0; }
+  to { background-position: 320px 320px; }
+}
+
+/* ---------- Magnetic button wrapper ---------- */
+.cr-magnetic {
+  display: inline-block;
+  will-change: transform;
+}
+
+/* ---------- 3D tilt card ---------- */
+.cr-tilt {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.4s var(--cr-ease-out-expo),
+    box-shadow 0.4s var(--cr-ease-out-expo);
+}
+.cr-tilt-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(
+    600px circle at var(--cr-mx, 50%) var(--cr-my, 50%),
+    rgba(99, 102, 241, 0.12),
+    transparent 40%
+  );
+  pointer-events: none;
+}
+.cr-tilt:hover .cr-tilt-glow {
+  opacity: 1;
+}
+
+/* ---------- Reveal-on-scroll defaults (GSAP toggles them) ---------- */
+[data-animate="reveal"] {
+  will-change: transform, opacity;
+}
+
+/* ---------- Shimmer / shine for badges & pricing ---------- */
+.cr-shine {
+  position: relative;
+  overflow: hidden;
+}
+.cr-shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.18),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: cr-shine 4.5s ease-in-out infinite;
+}
+@keyframes cr-shine {
+  0% { left: -150%; }
+  60%, 100% { left: 150%; }
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
+/* ---------- Marquee logo strip ---------- */
+.cr-marquee {
+  display: flex;
+  width: max-content;
+  animation: cr-marquee 30s linear infinite;
+}
+.cr-marquee:hover {
+  animation-play-state: paused;
+}
+@keyframes cr-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ---------- Gradient text animation ---------- */
+.cr-grad-text {
+  background-size: 200% auto;
+  animation: cr-grad 6s linear infinite;
+}
+@keyframes cr-grad {
+  to { background-position: 200% center; }
+}
+
+/* ---------- Soft float for hero badges ---------- */
+.cr-float {
+  animation: cr-floaty 6s ease-in-out infinite;
+}
+@keyframes cr-floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ---------- Respect reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .cr-mesh-blob,
+  .cr-particles,
+  .cr-shine::after,
+  .cr-marquee,
+  .cr-grad-text,
+  .cr-float {
+    animation: none !important;
+  }
+  .cr-cursor-dot,
+  .cr-cursor-ring {
+    display: none !important;
+  }
+  .cr-tilt {
+    transform: none !important;
+  }
+}
