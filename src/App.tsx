@@ -21,6 +21,14 @@ import Features from './pages/Features';
 import Sandbox from './pages/Sandbox';
 import Pricing from './pages/Pricing';
 import Docs from './pages/Docs';
+import About from './pages/About';
+import Blog from './pages/Blog';
+import Contact from './pages/Contact';
+import Security from './pages/Security';
+import VSCode from './pages/VSCode';
+import CLI from './pages/CLI';
+import Community from './pages/Community';
+import HelpCenter from './pages/HelpCenter';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import Terms from './pages/Terms';
 
@@ -51,6 +59,14 @@ export default function App() {
           <Route path="/sandbox" element={<Sandbox />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/docs" element={<Docs />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/security" element={<Security />} />
+          <Route path="/vscode" element={<VSCode />} />
+          <Route path="/cli" element={<CLI />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/help" element={<HelpCenter />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<Terms />} />
           
