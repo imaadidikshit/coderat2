@@ -12,9 +12,9 @@ export default function Terms() {
       <main className="relative pt-32 pb-24 px-6 max-w-[800px] mx-auto">
         <GradientMesh particles={false} />
         <h1 className="relative z-10 text-4xl md:text-5xl font-display font-bold tracking-tight mb-8">Terms of Service</h1>
-        <p className="text-white/50 mb-12 text-sm uppercase tracking-widest">Last updated: June 2026</p>
+        <p className="relative z-10 text-white/50 mb-12 text-sm uppercase tracking-widest">Last updated: June 2026</p>
 
-        <div className="space-y-8 text-white/70 leading-relaxed">
+        <div className="relative z-10 space-y-8 text-white/70 leading-relaxed">
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">1. Acceptance of Terms</h2>
             <p>By accessing or using QA Copilot, you agree to be bound by these Terms of Service. If you disagree with any part of the terms, you may not access the service.</p>

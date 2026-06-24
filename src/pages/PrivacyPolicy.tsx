@@ -12,12 +12,12 @@ export default function PrivacyPolicy() {
       <main className="relative pt-32 pb-24 px-6 max-w-[800px] mx-auto">
         <GradientMesh particles={false} />
         <h1 className="relative z-10 text-4xl md:text-5xl font-display font-bold tracking-tight mb-8">Privacy Policy</h1>
-        <p className="text-white/50 mb-12 text-sm uppercase tracking-widest">Last updated: June 2026</p>
+        <p className="relative z-10 text-white/50 mb-12 text-sm uppercase tracking-widest">Last updated: June 2026</p>
 
-        <div className="space-y-8 text-white/70 leading-relaxed">
+        <div className="relative z-10 space-y-8 text-white/70 leading-relaxed">
           <section>
             <h2 className="text-2xl font-bold text-white mb-4">1. Information We Collect</h2>
-            <p>We collect information you provide directly to us when using QA Copilot, including your GitHub repository metadata, test execution logs, and account details. We do not store your source code; we only process DOM snapshots and test assertions to provide our AI-healing capabilities.</p>
+            <p>We collect information you provide directly to us when using QA Copilot, including your GitHub repository metadata, test execution logs, and account details. (Coderat) We do not store your source code; we only process DOM snapshots and test assertions to provide our AI-healing capabilities.</p>
           </section>
 
           <section>
