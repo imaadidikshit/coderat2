@@ -19,7 +19,8 @@ gsap.registerPlugin(ScrollTrigger);
 // --- NAVBAR ---
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
-import { CustomCursor, MagneticButton, TiltCard, CountUp } from '../components/fx';
+import { MagneticButton, TiltCard, CountUp } from '../components/fx';
+import { Accordion } from '../components/marketing/Accordion';
 
 const StatsBand = () => (
   <section className="py-24 px-6 bg-[#0A0A0B] border-y border-white/5">
@@ -217,11 +218,14 @@ const HeroSequence = () => {
 
                 {/* Hero Text */}
                 <div ref={heroTextRef} className="absolute left-6 lg:left-[10%] top-[15%] lg:top-[30%] w-[calc(100%-3rem)] lg:w-[40%] z-20">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-[11px] font-bold uppercase tracking-widest mb-6">
+                        <Bot className="w-3.5 h-3.5" /> The autonomous QA engineer
+                    </div>
                     <h1 className="text-5xl md:text-[80px] font-display font-bold text-white tracking-tight leading-[1.05] mb-6">
-                        Ship broken code. <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400">We'll fix it.</span>
+                        Your tests break. <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400">Coderat heals them.</span>
                     </h1>
                     <p className="text-lg md:text-xl text-white/60 mb-10 leading-relaxed font-medium max-w-lg">
-                        Autonomous QA testing software considered "not bad" by millions of developers. Catch DOM drift and heal Playwright scripts on the fly.
+                        Coderat discovers your flows, generates Playwright tests, runs them on every pull request, and rewrites broken selectors into resilient ones — shipping the fix as a PR while you sleep.
                     </p>
                     <div className="flex flex-col sm:flex-row items-center gap-4 font-bold uppercase text-[13px] tracking-wide">
                         <MagneticButton as="div" className="block w-full sm:w-auto">
@@ -831,16 +835,135 @@ export default function LandingPage() {
 
     return (
         <div className="min-h-screen bg-[#0A0A0B] text-white font-sans selection:bg-indigo-500/30">
-            <CustomCursor />
             <Navbar />
             <HeroSequence />
             <HalfSplitScrollytelling />
             <CodeParallax />
             <PinnedSequence />
             <StackingCards />
+            <UseCasesScroll />
+            <WorkflowDetail />
             <StatsBand />
             <TestimonialsMarquee />
+            <LandingFAQ />
             <Footer />
         </div>
     )
 }
+
+/* ----------------------------------------------------------------- *
+ * Additional content-rich sections (scroll-reactive, on-theme).
+ * ----------------------------------------------------------------- */
+const USE_CASES = [
+  { icon: Workflow, c: 'text-indigo-400', t: 'Frontend teams', d: 'Ship UI changes fearlessly. Coderat keeps your Playwright suite in lockstep with every component refactor and design-system update.' },
+  { icon: Shield, c: 'text-emerald-400', t: 'QA & platform', d: 'Stop babysitting flaky selectors. Hand maintenance to an agent that heals locators and quarantines unstable specs automatically.' },
+  { icon: Server, c: 'text-pink-400', t: 'Fast-moving startups', d: 'No QA hire yet? Coderat is your first QA engineer — discovering flows and gating every PR from day one.' },
+  { icon: Database, c: 'text-cyan-400', t: 'Enterprise', d: 'Single-tenant runners, audit-ready logs, SSO, and bring-your-own-model keys for teams with strict compliance needs.' },
+];
+
+const UseCasesScroll = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  useGSAP(() => {
+    if (!ref.current) return;
+    const cards = ref.current.querySelectorAll('[data-uc]');
+    gsap.from(cards, {
+      opacity: 0, y: 60, rotateX: -10, duration: 0.9, stagger: 0.12, ease: 'power3.out',
+      scrollTrigger: { trigger: ref.current, start: 'top 78%', once: true },
+    });
+  }, { scope: ref });
+  return (
+    <section ref={ref} className="py-28 px-6 bg-[#0A0A0B]">
+      <div className="max-w-[1200px] mx-auto text-center mb-16">
+        <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-4">Built for every team</h2>
+        <p className="text-white/50 text-lg max-w-2xl mx-auto">However you ship, Coderat slots into your workflow and owns the part nobody wants to: keeping tests green.</p>
+      </div>
+      <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 perspective-[1200px]">
+        {USE_CASES.map((u) => {
+          const Icon = u.icon;
+          return (
+            <TiltCard key={u.t} data-uc max={7} className="bg-[#111111] border border-white/10 rounded-3xl p-8 md:p-10">
+              <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6">
+                <Icon className={`w-7 h-7 ${u.c}`} />
+              </div>
+              <h3 className="text-2xl font-bold mb-3">{u.t}</h3>
+              <p className="text-white/50 leading-relaxed text-lg">{u.d}</p>
+            </TiltCard>
+          );
+        })}
+      </div>
+    </section>
+  );
+};
+
+const WORKFLOW = [
+  { n: '01', icon: Globe, c: 'text-indigo-400', t: 'Connect & discover', d: 'Install the GitHub app and point Coderat at your app. Agents crawl it like a real user and map every critical flow into a Playwright suite — no test writing required.' },
+  { n: '02', icon: Play, c: 'text-emerald-400', t: 'Run on every change', d: 'Each pull request triggers a parallel run across isolated cloud browsers. Visual diffs and results land as inline PR comments within minutes.' },
+  { n: '03', icon: RefreshCw, c: 'text-amber-400', t: 'Detect & heal drift', d: 'When a selector or layout breaks, the agent reads the new DOM, finds the semantic match, and rewrites a resilient locator automatically.' },
+  { n: '04', icon: GitMerge, c: 'text-pink-400', t: 'Ship the fix', d: 'The heal ships as a reviewable pull request with the exact diff. You approve, merge, and stay green — zero manual maintenance.' },
+];
+
+const WorkflowDetail = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  useGSAP(() => {
+    if (!ref.current) return;
+    const rows = ref.current.querySelectorAll('[data-wf]');
+    rows.forEach((row) => {
+      gsap.from(row, {
+        opacity: 0, y: 50, duration: 0.8, ease: 'power3.out',
+        scrollTrigger: { trigger: row, start: 'top 82%', once: true },
+      });
+    });
+  }, { scope: ref });
+  return (
+    <section ref={ref} className="py-28 px-6 bg-[#0A0A0B] border-y border-white/5">
+      <div className="max-w-[1100px] mx-auto text-center mb-16">
+        <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-4">How it works, end to end</h2>
+        <p className="text-white/50 text-lg">Four steps. Fully autonomous. Always reviewable.</p>
+      </div>
+      <div className="max-w-[1000px] mx-auto space-y-6">
+        {WORKFLOW.map((w) => {
+          const Icon = w.icon;
+          return (
+            <div key={w.n} data-wf className="flex items-start gap-6 bg-[#111111] border border-white/10 rounded-3xl p-7 md:p-9">
+              <div className="shrink-0 flex flex-col items-center gap-3">
+                <span className="font-mono text-sm font-bold text-white/30">{w.n}</span>
+                <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
+                  <Icon className={`w-6 h-6 ${w.c}`} />
+                </div>
+              </div>
+              <div>
+                <h3 className="text-xl md:text-2xl font-bold mb-2">{w.t}</h3>
+                <p className="text-white/50 leading-relaxed text-base md:text-lg">{w.d}</p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+};
+
+const LANDING_FAQ = [
+  { q: 'Do I have to write any tests?', a: 'No. Coderat discovers your flows automatically and generates the Playwright suite for you. You can still pin critical paths or describe custom scenarios in plain English.' },
+  { q: 'How does the self-healing actually work?', a: 'When a locator breaks, the agent reads the updated DOM, finds the element by intent (role, text, data attributes), rewrites a resilient selector, and opens a pull request with the diff for your review.' },
+  { q: 'Will it store my source code?', a: 'Never. Coderat reads only the context it needs during an ephemeral run, then discards it. See the Security page for the full model.' },
+  { q: 'Which tools does it integrate with?', a: 'GitHub, Vercel, Netlify, VS Code, Claude Code, Codex, Antigravity, Slack, Linear, Datadog, PagerDuty and more. Browse the Integrations page for details.' },
+  { q: 'Is there a free tier?', a: 'Yes — the free tier includes flow discovery and a generous monthly run allowance, ideal for solo projects and evaluation.' },
+];
+
+const LandingFAQ = () => (
+  <section className="py-28 px-6 bg-[#0A0A0B]">
+    <div className="max-w-3xl mx-auto">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-4">Questions, answered</h2>
+        <p className="text-white/50 text-lg">Everything you need to know before you connect a repo.</p>
+      </div>
+      <Accordion items={LANDING_FAQ} />
+      <div className="text-center mt-10">
+        <Link to="/docs" className="inline-flex items-center gap-2 text-indigo-300 font-bold hover:text-indigo-200 transition-colors">
+          Read the full docs <ArrowRight className="w-4 h-4" />
+        </Link>
+      </div>
+    </div>
+  </section>
+);
