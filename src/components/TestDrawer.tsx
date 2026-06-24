@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { X, Play, Code, CheckCircle2, Clock, Terminal, ShieldAlert } from 'lucide-react';
 
 interface TestDrawerProps {

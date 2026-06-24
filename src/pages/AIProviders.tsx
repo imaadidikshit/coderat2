@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Key, AlertTriangle, CheckCircle2, Zap, BrainCircuit, Cpu, Circle, Globe, Sparkles, Send, Bot, User, Terminal, HelpCircle, X } from 'lucide-react';
 import DashboardLayout from '../layouts/DashboardLayout';
 

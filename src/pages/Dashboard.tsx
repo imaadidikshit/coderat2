@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { CheckCircle2 as CheckIcon, Code, Loader2, MoreVertical, Play, Search, X as XIcon, Zap, Target, Lightbulb, ExternalLink, Bot, Sparkles, Trash2, FileText, AlertTriangle } from "lucide-react";
 import { Link } from "react-router-dom";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import DashboardLayout from "../layouts/DashboardLayout";
 import TestDrawer from "../components/TestDrawer";
 import SiteVisualizer from "../components/SiteVisualizer";

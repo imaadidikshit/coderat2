@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ArrowRight, Bot, Code, Loader2, Sparkles, Target, CheckCircle2, Play, X as XIcon, Globe, Briefcase } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../components/AuthProvider";
 
@@ -155,7 +155,7 @@ export default function Onboarding() {
           <div className="h-16 w-16 mx-auto rounded-2xl bg-[#0E0E11] border border-white/10 flex items-center justify-center text-indigo-400 mb-6 shadow-[0_0_15px_rgba(99,102,241,0.2)]">
             <Sparkles className="h-8 w-8 text-emerald-400" />
           </div>
-          {showResults ? <h1 className="text-3xl font-bold tracking-tight text-white mb-3">AI Discovery Complete</h1> : <h1 className="text-3xl font-bold tracking-tight text-white mb-3">Create First Test</h1> }
+          {showResults ? <h1 className="text-3xl font-display font-bold tracking-tight text-white mb-3">AI Discovery Complete</h1> : <h1 className="text-3xl font-display font-bold tracking-tight text-white mb-3">Create First Test</h1> }
           {showResults ? <p className="text-white/40 italic">We've scanned {url} and generated Playwright tests.</p> : <p className="text-white/40 italic">Enter the URL of your staging or production environment. Our AI will scan the DOM and generate tests.</p>}
         </motion.div>
 

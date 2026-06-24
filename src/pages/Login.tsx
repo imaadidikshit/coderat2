@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import { Github, Target, Mail, ArrowRight, CheckCircle2, Loader2, AlertCircle } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { Github, Mail, Target, Loader2, ArrowLeft, Activity, Bug, Bot } from "lucide-react";
 import { Link, Navigate, useNavigate, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../components/AuthProvider";
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+
+import brandLogo from '../components/model_logos/App_assets/wordmark_D_white.svg';
 
 export default function Login() {
   const { user } = useAuth();
@@ -36,7 +40,7 @@ export default function Login() {
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
-          shouldCreateUser: false, // Prevent new users from creating account here
+          shouldCreateUser: false,
         }
       });
       if (error) {
@@ -69,7 +73,6 @@ export default function Login() {
         type: 'email'
       });
       if (error) throw error;
-      // successful login will be handled by AuthProvider updates
     } catch (err: any) {
       setError(err.message || "Invalid or expired OTP");
     } finally {
@@ -77,158 +80,204 @@ export default function Login() {
     }
   };
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const visualsRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (!visualsRef.current) return;
+    
+    const lines = visualsRef.current.querySelectorAll('.log-line');
+    const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
+    
+    gsap.set(lines, { opacity: 0, x: -20 });
+    
+    tl.to(lines[0], { opacity: 1, x: 0, duration: 0.3 })
+      .to(lines[1], { opacity: 1, x: 0, duration: 0.3 }, "+=0.2")
+      .to(lines[2], { opacity: 1, x: 0, duration: 0.3, color: '#ef4444' }, "+=0.2") // Error
+      .to(lines[3], { opacity: 1, x: 0, duration: 0.4 }, "+=0.5") // Analyzing
+      .to(lines[4], { opacity: 1, x: 0, duration: 0.3, color: '#10b981' }, "+=0.8") // Fixed
+      .to(lines, { opacity: 0, y: -20, stagger: 0.1, duration: 0.5, ease: "power2.in" }, "+=2");
+      
+  }, { scope: containerRef });
+
   if (user) {
     return <Navigate to="/dashboard" replace />;
   }
 
   return (
-    <div className="min-h-screen bg-[#0A0A0B] flex font-sans">
-      {/* Left Panel */}
-      <div className="hidden lg:flex w-1/2 bg-[#050505] border-r border-white/5 relative flex-col justify-between p-12 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-emerald-500/5 pointer-events-none" />
-        <div className="relative z-10 flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-emerald-400 p-[1px]">
-            <div className="w-full h-full bg-black rounded-xl flex items-center justify-center">
-              <Target className="h-5 w-5 text-white" />
+    <div ref={containerRef} className="min-h-screen bg-[#0A0A0B] flex font-sans overflow-hidden relative">
+      <div className="absolute top-8 left-8 z-50">
+        <Link to="/" className="flex items-center">
+          <img src={brandLogo} alt="QA Copilot" className="h-12 w-auto" />
+        </Link>
+      </div>
+
+      {/* Left Panel - Auto Animated Visuals */}
+      <div className="hidden lg:flex flex-col w-1/2 p-12 relative items-center justify-center border-r border-white/5 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(99,102,241,0.08)_0%,transparent_70%)] pointer-events-none" />
+        
+        <div className="w-full max-w-md bg-[#111111]/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden transform perspective-[1000px] rotate-y-[5deg] rotate-x-[2deg]">
+            <div className="h-12 bg-[#1A1A1A] border-b border-white/5 flex items-center px-4 gap-2">
+                <Bot className="w-5 h-5 text-indigo-400" />
+                <span className="text-white/60 font-mono text-xs font-bold uppercase tracking-widest">Auto-Healer Active</span>
             </div>
-          </div>
-          <span className="text-xl font-bold tracking-tight text-white">QA Copilot</span>
-        </div>
-        
-        <div className="relative z-10 max-w-md">
-          <h1 className="text-4xl font-bold text-white mb-6 leading-tight">
-            Welcome back to <br/> QA Copilot.
-          </h1>
-          <p className="text-white/50 text-lg mb-8 leading-relaxed">
-            Manage your test suites, view execution logs, and analyze test performance all in one place.
-          </p>
-        </div>
-        
-        <div className="relative z-10 flex items-center gap-4 text-white/40 text-sm">
-          <span>© 2026 QA Copilot Inc.</span>
-          <a href="#" className="hover:text-white transition-colors">Privacy</a>
-          <a href="#" className="hover:text-white transition-colors">Terms</a>
+            <div ref={visualsRef} className="p-6 font-mono text-sm space-y-4">
+                <div className="log-line flex gap-3 text-white/70">
+                    <span className="text-indigo-400">00:01</span>
+                    <span>Running test suite: checkout.spec.ts</span>
+                </div>
+                <div className="log-line flex gap-3 text-white/70">
+                    <span className="text-indigo-400">00:02</span>
+                    <span>Navigating to /checkout</span>
+                </div>
+                <div className="log-line flex gap-3 text-white/70">
+                    <span className="text-indigo-400">00:04</span>
+                    <span>Error: Timeout waiting for selector ".btn-submit"</span>
+                </div>
+                <div className="log-line flex gap-3 text-white/70 items-center">
+                    <span className="text-indigo-400">00:05</span>
+                    <span className="flex items-center gap-2 text-indigo-300">
+                        <Loader2 className="w-3 h-3 animate-spin" />
+                        Analyzing DOM drift...
+                    </span>
+                </div>
+                <div className="log-line flex gap-3 text-white/70">
+                    <span className="text-indigo-400">00:06</span>
+                    <span className="text-emerald-400 font-bold">✓ Healed: Replaced with "[data-testid=checkout-submit]"</span>
+                </div>
+            </div>
+            <div className="h-2 w-full bg-white/5 relative overflow-hidden">
+                <div className="absolute top-0 left-0 h-full w-full bg-indigo-500/50 transform -translate-x-full animate-[shimmer_2s_infinite]" />
+            </div>
         </div>
       </div>
 
-      {/* Right Panel */}
-      <div className="flex-1 flex items-center justify-center p-6 relative">
-        <div className="absolute inset-0 bg-[#0A0A0B] pointer-events-none -z-10" />
-
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-md"
-        >
-          {/* Mobile Header */}
-          <div className="flex lg:hidden items-center gap-3 mb-10 justify-center">
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-emerald-400 p-[1px]">
-              <div className="w-full h-full bg-black rounded-xl flex items-center justify-center">
-                <Target className="h-5 w-5 text-white" />
+      {/* Right Panel - Login Form */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-[#0A0A0B] relative z-10 overflow-y-auto">
+        <div className="w-full max-w-[400px]">
+          <div className="mb-10">
+            <h2 className="text-3xl font-display font-bold text-white mb-2 tracking-tight">Welcome back</h2>
+            <p className="text-white/50 text-sm">Enter your credentials to access your workspace.</p>
+            {location.state?.message && (
+              <div className="mt-4 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
+                {location.state.message}
               </div>
-            </div>
-            <span className="text-xl font-bold tracking-tight text-white">QA Copilot</span>
+            )}
           </div>
 
-          <div className="mb-10 text-center lg:text-left">
-            <h2 className="text-3xl font-bold tracking-tight text-white mb-2">Sign in</h2>
-            <p className="text-white/50 text-sm">Welcome back! Please enter your details.</p>
-          </div>
+          <AnimatePresence mode="wait">
+            {step === 'email' ? (
+               <motion.div 
+                 key="email-step"
+                 initial={{ opacity: 0, x: -20 }}
+                 animate={{ opacity: 1, x: 0 }}
+                 exit={{ opacity: 0, x: 20 }}
+                 className="space-y-4"
+               >
+                 <button 
+                   onClick={handleGithubLogin}
+                   className="w-full bg-[#111111] border border-white/10 hover:bg-[#1a1a1a] text-white p-3.5 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-3"
+                 >
+                   <Github className="w-5 h-5" />
+                   Continue with GitHub
+                 </button>
+                 
+                 <div className="relative flex items-center py-4">
+                   <div className="flex-grow border-t border-white/5"></div>
+                   <span className="flex-shrink-0 mx-4 text-white/30 text-xs font-bold uppercase tracking-widest">Or login with code</span>
+                   <div className="flex-grow border-t border-white/5"></div>
+                 </div>
 
-          {error && (
-            <div className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-xl flex items-start gap-3">
-              <AlertCircle className="h-5 w-5 text-red-500 shrink-0 mt-0.5" />
-              <p className="text-sm text-red-400">{error}</p>
-            </div>
-          )}
+                 <form onSubmit={handleSendOtp} className="space-y-4">
+                   {error && (
+                     <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium">
+                       {error}
+                     </div>
+                   )}
+                   
+                   <div className="space-y-1">
+                     <label className="text-[11px] font-bold text-white/40 uppercase tracking-widest px-1">Email</label>
+                     <div className="relative">
+                       <Mail className="absolute left-3.5 top-3.5 h-4 w-4 text-white/30" />
+                       <input 
+                         type="email" 
+                         value={email}
+                         onChange={(e) => setEmail(e.target.value)}
+                         className="w-full bg-[#111111] border border-white/10 rounded-xl px-10 py-3.5 text-white text-sm focus:outline-none focus:border-indigo-500/50 transition-colors placeholder:text-white/20"
+                         placeholder="name@company.com"
+                         required
+                       />
+                     </div>
+                   </div>
+                   
+                   <button 
+                     type="submit" 
+                     disabled={loading}
+                     className="w-full bg-white text-black p-3.5 rounded-xl font-bold text-sm hover:bg-gray-200 transition-colors mt-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                   >
+                     {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Send Magic Code'}
+                   </button>
+                 </form>
 
-          <div className="space-y-6">
-            <button 
-              onClick={handleGithubLogin}
-              type="button"
-              className="w-full py-3.5 px-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-sm font-medium text-white flex items-center justify-center gap-3 transition-colors group"
-            >
-              <Github className="h-5 w-5 text-white/70 group-hover:text-white" />
-              Sign in with GitHub
-            </button>
-
-            <div className="flex items-center gap-4 py-2">
-              <div className="h-px bg-white/5 flex-1"></div>
-              <span className="text-xs text-white/40 uppercase tracking-wider font-semibold">Or with email</span>
-              <div className="h-px bg-white/5 flex-1"></div>
-            </div>
-
-            <AnimatePresence mode="wait">
-              {step === 'email' ? (
-                <motion.form key="email-form" onSubmit={handleSendOtp} className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                  <div className="space-y-1.5">
-                    <label className="text-sm font-medium text-white/70 px-1">Work Email</label>
-                    <div className="relative">
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-white/40" />
-                      <input
-                        type="email"
-                        placeholder="john@company.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="w-full pl-12 pr-4 py-3.5 bg-black/50 border border-white/10 rounded-xl text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 transition-all font-medium"
-                        required
-                      />
-                    </div>
-                  </div>
+                 <p className="mt-8 text-center text-xs text-white/40 font-medium">
+                   Don't have an account?{' '}
+                   <Link to="/signup" className="text-white hover:text-indigo-400 font-bold transition-colors">Sign up</Link>
+                 </p>
+               </motion.div>
+            ) : (
+               <motion.div
+                 key="otp-step"
+                 initial={{ opacity: 0, x: -20 }}
+                 animate={{ opacity: 1, x: 0 }}
+                 exit={{ opacity: 0, x: 20 }}
+                 className="space-y-4"
+               >
                   <button 
-                    type="submit"
-                    disabled={loading}
-                    className="w-full py-3.5 px-4 bg-white text-black hover:bg-white/90 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl text-sm font-medium flex items-center justify-center gap-2 transition-colors mt-2"
+                     onClick={() => {
+                        setStep('email');
+                        setOtp("");
+                        setError("");
+                     }}
+                     className="flex items-center gap-2 text-white/40 hover:text-white text-xs font-bold uppercase tracking-widest mb-6 transition-colors"
                   >
-                    {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <ArrowRight className="h-5 w-5" />}
-                    Continue
+                     <ArrowLeft className="w-4 h-4" /> Back to Email
                   </button>
-                </motion.form>
-              ) : (
-                <motion.form key="otp-form" onSubmit={handleVerifyOtp} className="space-y-5" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                  <div className="bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-6 text-center space-y-2">
-                    <Mail className="h-8 w-8 text-indigo-400 mx-auto mb-4" />
-                    <h3 className="text-white font-medium">Check your email</h3>
-                    <p className="text-sm text-white/60">We sent a verification code to <br/><strong className="text-white">{email}</strong></p>
-                  </div>
-                  
-                  <div className="space-y-1.5">
-                    <label className="text-sm font-medium text-white/70 px-1">Verification Code</label>
-                    <input
-                      type="text"
-                      placeholder="000000"
-                      value={otp}
-                      onChange={(e) => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                      className="w-full px-4 py-4 bg-black/50 border border-white/10 rounded-xl text-2xl text-center text-white placeholder:text-white/20 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition-all font-mono tracking-[0.5em]"
-                      maxLength={6}
-                      required
-                    />
-                  </div>
-                  
-                  <button 
-                    type="submit"
-                    disabled={loading || otp.length !== 6}
-                    className="w-full py-3.5 px-4 bg-emerald-500 hover:bg-emerald-400 text-white disabled:opacity-50 disabled:cursor-not-allowed rounded-xl text-sm font-medium flex items-center justify-center transition-colors"
-                  >
-                    {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Sign in"}
-                  </button>
-                  
-                  <button
-                    type="button"
-                    onClick={() => setStep('email')}
-                    className="w-full py-2 text-sm text-white/40 hover:text-white transition-colors"
-                  >
-                    Use a different email
-                  </button>
-                </motion.form>
-              )}
-            </AnimatePresence>
-          </div>
 
-          <div className="mt-8 text-center text-sm text-white/50">
-            Don't have an account? <Link to="/signup" className="text-white hover:underline transition-all">Sign up</Link>
-          </div>
-        </motion.div>
+                  <form onSubmit={handleVerifyOtp} className="space-y-4">
+                     {error && (
+                       <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium">
+                         {error}
+                       </div>
+                     )}
+                     
+                     <div className="space-y-1">
+                       <label className="text-[11px] font-bold text-white/40 uppercase tracking-widest px-1">Verification Code</label>
+                       <input 
+                         type="text" 
+                         value={otp}
+                         onChange={(e) => setOtp(e.target.value)}
+                         className="w-full bg-[#111111] border border-white/10 rounded-xl px-4 py-3.5 text-white text-sm focus:outline-none focus:border-indigo-500/50 transition-colors text-center tracking-[0.5em] font-mono text-lg"
+                         placeholder="000000"
+                         maxLength={6}
+                         required
+                       />
+                       <p className="text-xs text-white/40 px-1 mt-2">
+                           We sent a 6-digit code to <span className="text-white font-medium">{email}</span>.
+                       </p>
+                     </div>
+                     
+                     <button 
+                       type="submit" 
+                       disabled={loading || otp.length < 6}
+                       className="w-full bg-white text-black p-3.5 rounded-xl font-bold text-sm hover:bg-gray-200 transition-colors mt-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                     >
+                       {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Verify Code'}
+                     </button>
+                  </form>
+               </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );

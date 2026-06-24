@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import { ArrowRight, ArrowLeft, Briefcase, Building, Code, Hash, CheckCircle2, Loader2, Sparkles, Target, Zap, User as UserIcon, Mail } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import React, { useState, useRef } from "react";
+import { ArrowRight, ArrowLeft, Briefcase, Building, Code, Hash, CheckCircle2, Loader2, Sparkles, Target, Zap, User as UserIcon, Mail, Activity, Bug, Bot } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import { useAuth } from "../components/AuthProvider";
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+
+import brandLogo from '../components/model_logos/App_assets/wordmark_D_white.svg';
 
 const roles = [
   { id: "developer", label: "Software Engineer", icon: Code },
@@ -49,6 +53,24 @@ export default function ProfileSetup() {
   const [loading, setLoading] = useState(false);
 
   const TOTAL_STEPS = accountType === "company" ? 4 : 3;
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const visualsRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    if (!visualsRef.current) return;
+    const cards = visualsRef.current.children;
+    
+    // Auto-playing floating animation
+    gsap.to(cards, {
+        y: "-=15",
+        duration: 3,
+        yoyo: true,
+        repeat: -1,
+        ease: "sine.inOut",
+        stagger: 0.3
+    });
+  }, { scope: containerRef });
 
   const handleNext = () => setStep((s) => Math.min(TOTAL_STEPS, s + 1));
   const handlePrev = () => setStep((s) => Math.max(1, s - 1));
@@ -129,24 +151,56 @@ export default function ProfileSetup() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0A0A0B] flex flex-col font-sans">
-      <header className="px-8 py-6 flex items-center justify-between border-b border-white/5 bg-[#050505]">
+    <div ref={containerRef} className="min-h-screen bg-[#0A0A0B] flex flex-col font-sans relative">
+      <header className="px-8 py-6 flex items-center justify-between border-b border-white/5 bg-[#050505] relative z-20">
          <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-emerald-400 p-[1px]">
-              <div className="w-full h-full bg-black rounded-lg flex items-center justify-center">
-                <Target className="h-4 w-4 text-white" />
-              </div>
-            </div>
-            <span className="text-xl font-bold tracking-tight text-white">QA Copilot</span>
+            <img src={brandLogo} alt="QA Copilot" className="h-12 w-auto" />
          </div>
          <div className="text-sm font-medium text-white/40">Step {step} of {TOTAL_STEPS}</div>
       </header>
 
       <main className="flex-1 flex flex-col items-center justify-center p-6 relative overflow-hidden">
-        <div className="absolute top-[20%] right-[30%] w-[40%] h-[40%] bg-indigo-500/5 blur-[120px] rounded-full mix-blend-screen pointer-events-none" />
-        <div className="absolute bottom-[20%] left-[30%] w-[40%] h-[40%] bg-emerald-500/5 blur-[120px] rounded-full mix-blend-screen pointer-events-none" />
+        {/* Animated Background Visuals */}
+        <div ref={visualsRef} className="absolute inset-0 pointer-events-none z-0 overflow-hidden flex items-center justify-center opacity-30">
+            {/* Visual Card 1 */}
+            <div className="absolute w-64 h-72 bg-[#111111] border border-indigo-500/20 rounded-2xl shadow-[0_0_60px_rgba(99,102,241,0.15)] p-6 flex flex-col gap-4 transform -translate-x-[30vw] -translate-y-20 rotate-[-15deg]">
+                <div className="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center">
+                    <Activity className="w-6 h-6 text-indigo-400" />
+                </div>
+                <div className="flex gap-2 h-16 items-end mt-4">
+                    <div className="h-4 w-4 bg-indigo-500 rounded-sm animate-pulse" style={{ animationDelay: '0ms' }}></div>
+                    <div className="h-12 w-4 bg-indigo-500 rounded-sm animate-pulse" style={{ animationDelay: '100ms' }}></div>
+                    <div className="h-8 w-4 bg-indigo-500 rounded-sm animate-pulse" style={{ animationDelay: '200ms' }}></div>
+                    <div className="h-16 w-4 bg-red-500 rounded-sm shadow-[0_0_10px_rgba(239,68,68,0.5)]"></div>
+                    <div className="h-10 w-4 bg-indigo-500 rounded-sm animate-pulse" style={{ animationDelay: '300ms' }}></div>
+                </div>
+            </div>
 
-        <div className="w-full max-w-xl z-10">
+            {/* Visual Card 2 */}
+            <div className="absolute w-64 h-72 bg-[#111111] border border-emerald-500/20 rounded-2xl shadow-[0_0_60px_rgba(16,185,129,0.15)] p-6 flex flex-col gap-4 transform translate-x-[30vw] translate-y-20 rotate-[15deg]">
+                <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                    <Bug className="w-6 h-6 text-emerald-400" />
+                </div>
+                <div className="flex-1 border border-white/5 bg-[#0A0A0B] rounded relative mt-4">
+                    <div className="absolute inset-2 border-2 border-dashed border-red-500/50 bg-red-500/10 rounded"></div>
+                    <div className="absolute bottom-2 right-2 w-12 h-4 bg-white/10 rounded"></div>
+                </div>
+            </div>
+            
+            {/* Visual Card 3 */}
+            <div className="absolute w-64 h-72 bg-[#111111] border border-pink-500/20 rounded-2xl shadow-[0_0_60px_rgba(236,72,153,0.15)] p-6 flex flex-col gap-4 transform -translate-y-[25vh] z-10">
+                <div className="w-12 h-12 rounded-xl bg-pink-500/20 flex items-center justify-center">
+                    <Bot className="w-6 h-6 text-pink-400" />
+                </div>
+                <div className="flex-1 space-y-2 mt-4">
+                    <div className="h-2 w-full bg-white/10 rounded"></div>
+                    <div className="h-2 w-3/4 bg-white/10 rounded"></div>
+                    <div className="h-8 w-full bg-emerald-500/10 border border-emerald-500/30 rounded mt-4"></div>
+                </div>
+            </div>
+        </div>
+
+        <div className="w-full max-w-xl z-10 relative">
             <div className="flex items-center gap-2 mb-12">
                {[...Array(TOTAL_STEPS)].map((_, i) => (
                  <div key={i} className={`h-1 flex-1 rounded-full overflow-hidden bg-white/5`}>
@@ -164,7 +218,7 @@ export default function ProfileSetup() {
               {step === 1 && (
                  <motion.div key="step1-account" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-8">
                      <div>
-                         <h2 className="text-3xl font-bold tracking-tight text-white mb-2">How will you use QA Copilot?</h2>
+                         <h2 className="text-3xl font-display font-bold tracking-tight text-white mb-2">How will you use QA Copilot?</h2>
                          <p className="text-white/50 text-lg">We'll customize your experience accordingly.</p>
                      </div>
                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -196,7 +250,7 @@ export default function ProfileSetup() {
               {step === 2 && (
                  <motion.div key="step2-role" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-8">
                      <div>
-                         <h2 className="text-3xl font-bold tracking-tight text-white mb-2">What best describes your role?</h2>
+                         <h2 className="text-3xl font-display font-bold tracking-tight text-white mb-2">What best describes your role?</h2>
                          <p className="text-white/50 text-lg">We'll tailor your dashboard to your technical needs.</p>
                      </div>
                      <div className="space-y-3">
@@ -244,7 +298,7 @@ export default function ProfileSetup() {
               {step === 3 && accountType === "company" && (
                  <motion.div key="step3-company" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-8">
                      <div>
-                         <h2 className="text-3xl font-bold tracking-tight text-white mb-2">Company Details</h2>
+                         <h2 className="text-3xl font-display font-bold tracking-tight text-white mb-2">Company Details</h2>
                          <p className="text-white/50 text-lg">Use your organization's domain and name to unlock team features.</p>
                      </div>
                      <div className="space-y-6">
@@ -341,7 +395,7 @@ export default function ProfileSetup() {
               {((step === 4 && accountType === "company") || (step === 3 && accountType === "individual")) && (
                  <motion.div key="step-goal" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="space-y-8">
                      <div>
-                         <h2 className="text-3xl font-bold tracking-tight text-white mb-2">What is your primary goal?</h2>
+                         <h2 className="text-3xl font-display font-bold tracking-tight text-white mb-2">What is your primary goal?</h2>
                          <p className="text-white/50 text-lg">Select what you most want to achieve with QA Copilot's features.</p>
                      </div>
                      <div className="space-y-3">

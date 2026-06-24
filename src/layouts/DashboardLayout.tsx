@@ -3,7 +3,7 @@ import { Box, Code, GitMerge, Settings, Plus, LogOut, BrainCircuit, Globe } from
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../components/AuthProvider';
 import { supabase } from '../lib/supabase';
-import brandLogo from '../components/model_logos/App_assets/wordmark_D _white.svg';
+import brandLogo from '../components/model_logos/App_assets/wordmark_D_white.svg';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
@@ -37,7 +37,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <div className="w-64 border-r border-white/10 bg-[#0E0E11] flex flex-col relative z-20">
         <div className="h-20 flex items-center px-6 border-b border-white/10 shrink-0">
           <Link to="/" className="flex items-center group -ml-2">
-            <img src={brandLogo} alt="Coderat Logo" className="h-8 md:h-10 w-auto object-contain scale-[1.5] md:scale-[1.8] origin-left transition-opacity group-hover:opacity-90" />
+            <img src={brandLogo} alt="Coderat Logo" className="h-12 md:h-14 w-auto object-contain transition-opacity group-hover:opacity-90" />
           </Link>
         </div>
         
