@@ -19,6 +19,62 @@ gsap.registerPlugin(ScrollTrigger);
 // --- NAVBAR ---
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
+import { CustomCursor, MagneticButton, TiltCard, CountUp } from '../components/fx';
+
+const StatsBand = () => (
+  <section className="py-24 px-6 bg-[#0A0A0B] border-y border-white/5">
+    <div className="max-w-[1200px] mx-auto text-center mb-14">
+      <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-4">Trusted by shipping teams</h2>
+      <p className="text-white/50 text-lg">Numbers from teams who let Coderat own their QA.</p>
+    </div>
+    <div className="max-w-[1100px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-5">
+      {[
+        { end: 2.4, suffix: 'M+', label: 'Tests healed', decimals: 1 },
+        { end: 92, suffix: '%', label: 'Less flakiness', decimals: 0 },
+        { end: 14000, suffix: '+', label: 'Repos connected', decimals: 0 },
+        { end: 3, suffix: 'x', label: 'Faster releases', decimals: 0 },
+      ].map((s) => (
+        <TiltCard key={s.label} max={7} className="bg-[#111111] border border-white/10 rounded-2xl py-10">
+          <div className="text-4xl md:text-5xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-emerald-400">
+            <CountUp end={s.end} suffix={s.suffix} decimals={s.decimals} />
+          </div>
+          <div className="text-white/40 text-sm font-bold mt-3 uppercase tracking-wide">{s.label}</div>
+        </TiltCard>
+      ))}
+    </div>
+  </section>
+);
+
+const TESTIMONIALS = [
+  { name: 'Alex Chen', role: 'Frontend Lead', text: 'Coderat caught a checkout bug before it hit production. Absolute lifesaver.' },
+  { name: 'Sarah Jenkins', role: 'QA Engineer', text: 'Self-healing scripts save us hours of maintenance every single week.' },
+  { name: 'Michael Rodriguez', role: 'CTO', text: 'We went from 40% flakiness to near zero in under a month.' },
+  { name: 'Emily Watson', role: 'Full Stack Dev', text: 'It tells me exactly which DOM element broke the test. Spot on.' },
+  { name: 'David Kim', role: 'Eng Manager', text: 'Finally a tool that understands React component drift.' },
+  { name: 'Lisa Thompson', role: 'PM', text: 'We release twice as fast now. The PR integration is magic.' },
+];
+
+const TestimonialsMarquee = () => (
+  <section className="py-28 bg-[#0A0A0B] overflow-hidden">
+    <div className="text-center mb-16 px-6">
+      <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-4">Loved by developers</h2>
+      <p className="text-white/50 text-lg">Don’t take our word for it.</p>
+    </div>
+    <div className="relative">
+      <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#0A0A0B] to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#0A0A0B] to-transparent z-10 pointer-events-none" />
+      <div className="cr-marquee gap-6">
+        {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+          <div key={i} className="w-[340px] shrink-0 bg-[#111111] border border-white/10 rounded-2xl p-6">
+            <p className="text-white/80 leading-relaxed mb-5">“{t.text}”</p>
+            <div className="text-indigo-400 font-bold text-sm">{t.name}</div>
+            <div className="text-white/40 text-xs">{t.role}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
 
 const HeroSequence = () => {
     const container = useRef<HTMLDivElement>(null);
@@ -168,12 +224,16 @@ const HeroSequence = () => {
                         Autonomous QA testing software considered "not bad" by millions of developers. Catch DOM drift and heal Playwright scripts on the fly.
                     </p>
                     <div className="flex flex-col sm:flex-row items-center gap-4 font-bold uppercase text-[13px] tracking-wide">
-                        <Link to="/signup" className="bg-white text-black px-8 py-4 rounded-xl hover:bg-gray-200 transition-colors w-full sm:w-auto text-center flex items-center justify-center gap-2">
-                            Get Started
-                        </Link>
-                        <a href="#sandbox" className="bg-[#1A1A1A] text-white border border-white/10 px-8 py-4 rounded-xl hover:bg-[#222222] transition-colors w-full sm:w-auto text-center flex items-center justify-center gap-2">
-                            See Sandbox
-                        </a>
+                        <MagneticButton className="w-full sm:w-auto">
+                            <Link to="/signup" className="bg-white text-black px-8 py-4 rounded-xl hover:bg-gray-200 transition-colors w-full sm:w-auto text-center flex items-center justify-center gap-2 shadow-[0_0_40px_rgba(255,255,255,0.15)]">
+                                Get Started <ArrowRight className="w-4 h-4" />
+                            </Link>
+                        </MagneticButton>
+                        <MagneticButton className="w-full sm:w-auto">
+                            <Link to="/sandbox" className="bg-[#1A1A1A] text-white border border-white/10 px-8 py-4 rounded-xl hover:bg-[#222222] transition-colors w-full sm:w-auto text-center flex items-center justify-center gap-2">
+                                See Sandbox
+                            </Link>
+                        </MagneticButton>
                     </div>
                 </div>
 
@@ -771,12 +831,15 @@ export default function LandingPage() {
 
     return (
         <div className="min-h-screen bg-[#0A0A0B] text-white font-sans selection:bg-indigo-500/30">
+            <CustomCursor />
             <Navbar />
             <HeroSequence />
             <HalfSplitScrollytelling />
             <CodeParallax />
             <PinnedSequence />
             <StackingCards />
+            <StatsBand />
+            <TestimonialsMarquee />
             <Footer />
         </div>
     )
