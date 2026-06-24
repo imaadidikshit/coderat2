@@ -15,7 +15,7 @@ export const Footer = () => {
       <div className="relative max-w-[1400px] mx-auto px-6 pt-20">
         <div className="relative rounded-3xl border border-white/10 bg-gradient-to-br from-[#111111] to-[#0A0A0B] p-10 md:p-16 text-center overflow-hidden cr-shine">
           <h2 className="text-3xl md:text-5xl font-display font-bold text-white tracking-tight mb-4">
-            Ship with confidence.
+            Your QA engineer that never sleeps.
           </h2>
           <p className="text-white/50 text-lg max-w-xl mx-auto mb-8">
             Let autonomous agents discover, test, and heal your flows on every pull request.
@@ -60,7 +60,9 @@ export const Footer = () => {
               {[Github, Twitter, Linkedin].map((Icon, i) => (
                 <a
                   key={i}
-                  href="#"
+                  href="https://github.com"
+                  target="_blank"
+                  rel="noreferrer"
                   className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/60 hover:text-white hover:border-white/30 transition-colors"
                 >
                   <Icon className="w-4 h-4" />
@@ -81,18 +83,18 @@ export const Footer = () => {
             <h4 className="text-white font-bold text-[13px] tracking-wide mb-4">DEVELOPERS</h4>
             <ul className="space-y-3 text-white/50 text-[13px] font-bold">
               <li><Link to="/docs" className="hover:text-white transition-colors">DOCS</Link></li>
-              <li><Link to="/integrations" className="hover:text-white transition-colors">VS CODE</Link></li>
-              <li><Link to="/integrations" className="hover:text-white transition-colors">CLI &amp; SKILLS</Link></li>
-              <li><Link to="/sandbox" className="hover:text-white transition-colors">PLAYGROUND</Link></li>
+              <li><Link to="/vscode" className="hover:text-white transition-colors">VS CODE</Link></li>
+              <li><Link to="/cli" className="hover:text-white transition-colors">CLI &amp; SKILLS</Link></li>
+              <li><Link to="/community" className="hover:text-white transition-colors">COMMUNITY</Link></li>
+              <li><Link to="/help" className="hover:text-white transition-colors">HELP CENTER</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="text-white font-bold text-[13px] tracking-wide mb-4">COMPANY</h4>
             <ul className="space-y-3 text-white/50 text-[13px] font-bold">
-              <li><a href="#" className="hover:text-white transition-colors">ABOUT</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">BLOG</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">CAREERS</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">CONTACT</a></li>
+              <li><Link to="/about" className="hover:text-white transition-colors">ABOUT</Link></li>
+              <li><Link to="/blog" className="hover:text-white transition-colors">BLOG</Link></li>
+              <li><Link to="/contact" className="hover:text-white transition-colors">CONTACT</Link></li>
             </ul>
           </div>
           <div>
@@ -100,13 +102,14 @@ export const Footer = () => {
             <ul className="space-y-3 text-white/50 text-[13px] font-bold">
               <li><Link to="/privacy" className="hover:text-white transition-colors">PRIVACY POLICY</Link></li>
               <li><Link to="/terms" className="hover:text-white transition-colors">TERMS OF SERVICE</Link></li>
+              <li><Link to="/security" className="hover:text-white transition-colors">SECURITY</Link></li>
             </ul>
           </div>
         </div>
         <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-white/40 text-[12px] font-bold tracking-wide">
           <div className="flex gap-6 mb-4 md:mb-0">
             <Link to="/terms" className="hover:text-white transition-colors">TERMS</Link>
-            <a href="#" className="hover:text-white transition-colors">SECURITY &amp; COMPLIANCE</a>
+            <Link to="/security" className="hover:text-white transition-colors">SECURITY &amp; COMPLIANCE</Link>
             <Link to="/privacy" className="hover:text-white transition-colors">PRIVACY</Link>
           </div>
           <div className="flex items-center gap-2">
